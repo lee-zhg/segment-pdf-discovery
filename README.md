@@ -51,6 +51,23 @@ Considerations:
 
 * Segmentation isenabled only via the API in the conversions section when the code pattern is written.
 
+```
+{
+  "configuration_id": "a23c467d-1212-4b3a-5555-93e788a3622a",
+  "name": "Example configuration",
+  "conversions": {
+    "segment": {
+      "enabled": true,
+      "selector_tags": ["h1", "h2", "h3", "h4", "h5", "h6"]
+    }
+  }
+}
+```
+
+> `enabled = true` turns on document segmentation.
+
+> selector_tags is an array that specifies the heading tags documents can be segmented on.
+
 * The number of segments per document is limited to 250. Any document content remaining after 249 segments will be stored within segment 250.
 
 * Each segment counts towards the document limit of your plan. Discovery will index segments until the plan limit is reached. See Discovery pricing plans for document limits.
@@ -155,6 +172,10 @@ npm install
 > Note: `PORT` can be configured in `.env`.
 
 ![](doc/source/images/web-app.png)
+
+5. The same information can be verified through Discovery instance UI.
+
+6. Comparing the original PDF document with the uploaded documents in the Discovery collection, you can verify that each segment in the original document was uploaded into the Discovery collection as an individual document for this code pattern. You may modify the Discovery configuration to fit your requirement.
 
 
 ## 6. Deploy and run the application on IBM Cloud
