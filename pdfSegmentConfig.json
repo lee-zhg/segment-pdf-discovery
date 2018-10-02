@@ -1,0 +1,93 @@
+{
+  "configuration_id": "0b1963f7-5fcc-4ab5-a95c-189c325c7d2e",
+  "name": "config-pdf-seg",
+  "description": "Segmentation rule for PDF",
+  "created": "2018-09-28T22:47:33.487Z",
+  "updated": "2018-09-28T22:47:33.487Z",
+  "conversions": {
+    "pdf": {
+      "heading": {
+        "fonts": [
+          {
+            "level": 1,
+            "min_size": 24,
+            "max_size": 80
+          },
+          {
+            "level": 2,
+            "min_size": 11,
+            "max_size": 23,
+            "bold": true
+          },
+          {
+            "level": 3,
+            "min_size": 8,
+            "max_size": 10,
+            "name": "Calibri-Bold"
+          }
+        ]
+      }
+    },
+    "html": {
+      "exclude_tags_completely": [
+        "script",
+        "sup",
+        "title",
+        "footer"
+      ],
+      "exclude_tags_keep_content": [
+        "font",
+        "em",
+        "span"
+      ],
+      "exclude_content": {
+        "xpaths": []
+      },
+      "keep_content": {
+        "xpaths": []
+      },
+      "exclude_tag_attributes": [
+        "EVENT_ACTIONS"
+      ]
+    },
+    "json_normalizations": [],
+    "segment": {
+      "enabled": true,
+      "selector_tags": [
+        "h2",
+        "h3",
+        "h4",
+        "h5"
+      ]
+    }
+  },
+  "enrichments": [
+    {
+      "source_field": "text",
+      "destination_field": "enriched_text",
+      "enrichment": "natural_language_understanding",
+      "options": {
+        "features": {
+          "entities": {
+            "sentiment": true,
+            "emotion": false,
+            "limit": 50,
+            "mentions": true,
+            "mention_types": true,
+            "sentence_locations": true
+          },
+          "sentiment": {
+            "document": true
+          },
+          "categories": {},
+          "concepts": {
+            "limit": 8
+          },
+          "keywords": {},
+          "relations": {}
+        }
+      }
+    }
+  ],
+  "normalizations": []
+}
