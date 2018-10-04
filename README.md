@@ -35,7 +35,7 @@ When reader completes this Code Pattern, they will understand how to:
 
 # Watch the Video
 
-[![](http://img.youtube.com/vi/gzlUSyLccSg/0.jpg)](https://youtu.be/gzlUSyLccSg)
+[![](https://i.ytimg.com/vi/4IsYkTCHgzE/hqdefault.jpg)](https://www.youtube.com/watch?v=4IsYkTCHgzE)
 
 
 # Discovery Collection Configuration
