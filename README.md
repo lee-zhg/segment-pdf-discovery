@@ -1,19 +1,38 @@
 [![Build Status](https://travis-ci.org/IBM/watson-discovery-food-reviews.svg?branch=master)](https://travis-ci.org/IBM/virtualhelpdesk)
 
-# Ingesting segments in PDF file into Watson Discovery
+# Splitting and Ingesting Segments of PDF File into Watson Discovery
 
 In this Code Pattern, we walk you through configuration steps of Watson Discovery service in order to split segments in PDF documents and ingest them into Discovery service as individual document automatically. It eliminates the manual tasks of splitting PDF file as it can be part of the common customer requirements. 
 
-Splitting and ingesting each segment in a PDF file as individual document can improve query efficency and identify information more procisely. 
+Splitting and ingesting each segment in a PDF file as individual document can improve query efficency and identify information more precisely. 
 
-After Discovery service configuration, an example web application is used to view and verify the outcome. You only need part of the web application for this code pattern although it contains multiple UI components. 
+After Discovery service configuration, an example web application is used to view and verify the outcome. You can also verify the splitting segmentations through the Discovery service UI.
 
 Optionally, Watson Knowledge Studio model can be deployed to Discovery service to improve data ingestion and query.
 
-When reader completes this Code Pattern, they will understand how to:
+When you complete this code pattern, you will understand how to:
 * Configure a Watson Discovery service to automatically split PDF file and ingest them as inidvidual documents
 * Load and enrich data in the Watson Discovery Service.
 * Query and manipulate data in the Watson Discovery Service.
+
+
+## Benefits of Splitting Documents
+
+IBM Watson Discovery makes it possible to rapidly build cognitive, cloud-based applications that unlock actionable insights hidden in unstructured data. It only takes a few steps to prepare your unstructured data, create a query that will pinpoint the information you need, and then integrate those insights into your new application or existing solution.
+
+Sometimes, documents are big and it makes harder for the Discovery service to identify quick answers to questions. These documents could be user manuals, frequently asked questions, catalogs, or many more. However, information in these documents is typically organized into sections that cover a specific topic. These specific topics can be very useful in an application that is designed to get the user to an answer quickly. This leads to Document Segmentation (manually or via the newly released Document Segmentation feature) to accurately ingest, enrich and analyze the documents in their logical parts.
+
+The Document Segmentation feature splits an unstructured document into useful chunks that are then enriched and stored as individual searchable results. This feature can also result in improved result ranking when performing relevancy training (specifically for natural language query) as the training is performed on segmented and information-specific portions of documents instead of the entire general document.
+
+
+## Use Case
+
+A car manual contains information of all major components. When the entire car manual is stored as one piece in the Discovery collection and an end user searches for tire information, it retrieves the whole document and take additional effort to pin-point the relevant information. On the other hand, when a specific subject (one segment of the car manual) is stored individually in the Discovery collection and the end user searches for tire information, the information can be pin-pointed precisely and easily. Only relevant information is retrieved.
+
+You have two options: manually split and save each subject as a separate document so that they can be uploaded to Watson Discovery collection individually. Or, use the Document Segmentation feature of Discovery service to segment the original document based on headings within the document.
+
+To automate the slitting and ingesting tasks, you can configure the <h> tags of the documents or change the rules on how the Discovery service splits their documents. Once broken down, each segment will be treated as a separate document that will be enriched and indexed separately. Document Segmentation will segment each time the specified <h> tag(s) are detected.
+
 
 ![](doc/source/images/architecture.png)
 
@@ -25,7 +44,7 @@ When reader completes this Code Pattern, they will understand how to:
 1. The user interacts with the data in Discovery server via the app UI.
 
 
-## Included components
+## Included Components
 * [Watson Discovery](https://www.ibm.com/watson/developercloud/discovery.html): A cognitive search and content analytics engine for applications to identify patterns, trends, and actionable insights.
 * [Watson Discovery Configuration](https://console.bluemix.net/docs/services/discovery/building.html#configuring-your-service): Split segments in PDF files and ingest them as individual documents into Discovery collection.
 
@@ -93,13 +112,13 @@ Considerations:
 6. [Deploy and run the application on IBM Cloud](#6-deploy-and-run-the-application-on-ibm-cloud)
 
 
-## 1. Clone the repo
+## 1. Clone the Repo
 ```
 git clone https://github.com/IBM/virtualhelpdesk
 ```
 
 
-## 2. Create IBM Cloud service
+## 2. Create IBM Cloud Service
 
 Create a Discovery service instance:
 
@@ -117,7 +136,7 @@ Launch the **Watson Discovery** tool. Click on **Upload your own data** link to 
 ![](doc/source/images/discovery-collection.png)
 
 
-## 4. Configure credentials
+## 4. Configure Credentials
 
 To configure the web application,
 ```
@@ -153,7 +172,7 @@ DISCOVERY_CONFIGURATION_FILE=pdfSegmentConfig.json
 # PORT=3000
 ```
 
-## 5. Run the application
+## 5. Run the Application
 
 1. Install [Node.js](https://nodejs.org/en/) runtime or NPM.
 2. Install required Node.js modules
@@ -178,7 +197,7 @@ npm install
 6. Comparing the original PDF document with the uploaded documents in the Discovery collection, you can verify that each segment in the original document was uploaded into the Discovery collection as an individual document for this code pattern. You may modify the Discovery configuration to fit your requirement.
 
 
-## 6. Deploy and run the application on IBM Cloud
+## 6. Deploy and Run the Application on IBM Cloud
 
 To deploy to the IBM Cloud, make sure have the [IBM Cloud CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/get_started.html#getting-started) tool installed. Then run the following commands to login using your IBM Cloud credentials.
 
