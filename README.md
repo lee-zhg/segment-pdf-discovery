@@ -1,12 +1,12 @@
 [![Build Status](https://travis-ci.org/IBM/watson-discovery-food-reviews.svg?branch=master)](https://travis-ci.org/IBM/virtualhelpdesk)
 
-# Splitting and Ingesting Segments of PDF File into Watson Discovery
+# Locating Information Efficently and Precisely - Splitting and Ingesting Segments of PDF File into Watson Discovery
+
+Splitting and ingesting each segment of a PDF file as individual document into Watson Discovery collection can improve query efficency and identify information more precisely. 
 
 In this Code Pattern, we walk you through configuration steps of Watson Discovery service in order to split segments in PDF documents and ingest them into Discovery service as individual document automatically. It eliminates the manual tasks of splitting PDF file as it can be part of the common customer requirements. 
 
-Splitting and ingesting each segment in a PDF file as individual document can improve query efficency and identify information more precisely. 
-
-After Discovery service configuration, an example web application is used to view and verify the outcome. You can also verify the splitting segmentations through the Discovery service UI.
+After Discovery service configuration, you verify the splitting PDF segmentations through the Discovery service UI and see how efficently and precisely to query information.
 
 Optionally, Watson Knowledge Studio model can be deployed to Discovery service to improve data ingestion and query.
 
@@ -18,9 +18,9 @@ When you complete this code pattern, you will understand how to:
 
 ## Benefits of Splitting Documents
 
-IBM Watson Discovery makes it possible to rapidly build cognitive, cloud-based applications that unlock actionable insights hidden in unstructured data. It only takes a few steps to prepare your unstructured data, create a query that will pinpoint the information you need, and then integrate those insights into your new application or existing solution.
+IBM Watson Discovery makes it possible to rapidly build cognitive, cloud-based applications that unlock actionable insights hidden in unstructured data. It only takes a few steps to prepare your unstructured data, create a query that will pin-point the information you need, and then integrate those insights into your new application or existing solution.
 
-Sometimes, documents are big and it makes harder for the Discovery service to identify quick answers to questions. These documents could be user manuals, frequently asked questions, catalogs, or many more. However, information in these documents is typically organized into sections that cover a specific topic. These specific topics can be very useful in an application that is designed to get the user to an answer quickly. This leads to Document Segmentation (manually or via Document Segmentation feature) to accurately ingest, enrich and analyze the documents in their logical parts.
+Sometimes, documents are big and it makes harder for the Discovery service to identify quick answers to questions. These documents could be user manuals, frequently asked questions, catalogs, or many more. However, information in these documents is typically organized into sections that cover a specific topic. These specific topics can be very useful in an application that is designed to get the user to an answer quickly. This leads to Document Segmentation (manually or via Document Segmentation feature of Discovery service) to accurately ingest, enrich and analyze the documents in their logical parts.
 
 The Document Segmentation feature splits an unstructured document into useful chunks that are then enriched and stored as individual searchable results. This feature can also result in improved result ranking when performing relevancy training (specifically for natural language query) as the training is performed on segmented and information-specific portions of documents instead of the entire general document.
 
@@ -39,9 +39,9 @@ To automate the slitting and ingesting tasks, you can configure the <h> tags of 
 ## Flow
 1. Administrator configures Watson Discovery service.
 1. PDF files are loaded into Discovery collection. Segments in PDF files are ingested into Discovery collection as individual documents.
-1. Enhanced data in Discovery collection is rendered to web aplication.
-1. Each segment in the PDF documents can be presented in web application.
-1. The user interacts with the data in Discovery server via the app UI.
+1. Enhanced data in Discovery collection is rendered to your aplication.
+1. Each segment in the PDF documents can be presented as an individual document to your application.
+1. The user interacts with the data in Discovery server via your application.
 
 
 ## Included Components
@@ -59,16 +59,16 @@ To automate the slitting and ingesting tasks, you can configure the <h> tags of 
 
 # Discovery Collection Configuration
 
-You can split your Word, PDF, and HTML documents into segments based on HTML heading tags. Once split, each segment is a separate document that will be enriched and indexed separately. Since queries will return these segments as separate documents, document segmentation can be used to:
+You can split your Word, PDF, and HTML documents into segments based on HTML heading tags. Once splitted, each segment is a separate document that will be stored, enriched and indexed separately. Since queries will return these segments as separate documents, document segmentation can be used to:
 
 * Perform aggregations on individual segments of a document. For example, your aggregation would count each time a segment mentions a specific entity, instead of only counting it once for the entire document.
 * Perform relevancy training on segments instead of documents, which will improve result reranking.
 
-The segments are created when the documents are converted to HTML (Word and PDF documents are converted to HTML before they are converted to JSON). Documents can be split based on the following HTML tags: h1 h2 h3 h4 h5 and h6.
+The segments are created when the documents are converted to HTML (Word and PDF documents are converted to HTML before they are converted to JSON). Documents can be splitted based on the following HTML tags: h1 h2 h3 h4 h5 and h6.
 
 Considerations:
 
-* Segmentation isenabled only via the API in the conversions section when the code pattern is written.
+* Segmentation is enabled only via the API in the conversions section when the code pattern is written.
 
 ```
 {
@@ -87,7 +87,7 @@ Considerations:
 
 > selector_tags is an array that specifies the heading tags documents can be segmented on.
 
-* The number of segments per document is limited to 250. Any document content remaining after 249 segments will be stored within segment 250.
+* At the time of writing, the number of segments per document is limited to 250. Any document content remaining after 249 segments will be stored within segment 250.
 
 * Each segment counts towards the document limit of your plan. Discovery will index segments until the plan limit is reached. See Discovery pricing plans for document limits.
 
@@ -107,74 +107,115 @@ Considerations:
 1. [Clone the repo](#1-clone-the-repo)
 2. [Create IBM Cloud service](#2-create-ibm-cloud-services)
 3. [Create Discovery Collection](#3-create-discovery-collection)
-4. [Configure credentials](#4-configure-credentials)
-5. [Run the application](#5-run-the-application)
+4. [Configuring Node.js Environment](#4-configure-credentials)
+5. [Creating and Assigning Custom Configuration, and Upload sample PDF File](#5-run-the-application)
 6. [Deploy and run the application on IBM Cloud](#6-deploy-and-run-the-application-on-ibm-cloud)
 
 
-## 1. Clone the Repo
+## 1. Cloning the Repo
 ```
 git clone https://github.com/IBM/virtualhelpdesk
 ```
 
 
-## 2. Create IBM Cloud Service
+## 2. Creating a Discovery service
 
-Create a Discovery service instance:
+You can create a Discovery service instance through IBM Clloud console.
 
 * [**Watson Discovery**](https://console.ng.bluemix.net/catalog/services/discovery)
 
+1. Enter `my-discovery-service` as the Service name.
 
-## 3. Create Discovery Collection
+1. Scroll down and choose desired pricing plan. `Lite` plan is the default.
 
-Launch the **Watson Discovery** tool. Click on **Upload your own data** link to create a **new data collection**. Enter a unique name.
+1. `Create`.
+
+
+## 3. Creating Discovery Collection
+
+To create a new collection,
+
+1. Locate the newly created Discovery service in the `Services` section and select it to open.
+
+![](doc/source/images/launch-discovery.png)
+
+> Save the connection and authentication information for your `.env` file in the next step. 
+
+> For a newly created Discovery service, it most likely has IAM authentication. The connection and authentication information come in form of `API Key` and `URL`.
+
+> If you intend to use an existing Discovery service, the connection and authentication information may come in form of `Username`, `Password` and `URL` which is the Basic authentication.
+
+2. Click `Launch tool` button to launch the **Watson Discovery** tool. 
+
+3. Click on `Upload your own data` link to create a **new data collection**. 
+
+4. Enter a unique name.
 
 ![](doc/source/images/create-collection.png)
 
-> Save the **environment_id** and **collection_id** for your `.env` file in the next step. You can find this data by clicking on `Use this collection API` under the **Collection Info** header located at the top right portion of the panel.
+5. `Create`.
+
+6. Click `Use this collection in API` link to view the collection information.
 
 ![](doc/source/images/discovery-collection.png)
 
+> Save the `environment_id` and `collection_id` for your `.env` file in the next step.
 
-## 4. Configure Credentials
 
-To configure the web application,
+## 4. Configuring Node.js Environment
+
+To configure the Node.js application, execute command
+
 ```
 cp env.sample .env
 ```
-Edit the `.env` file with the necessary settings.
+
+Edit the `.env` file with the necessary information.
+* DISCOVERY_USERNAME
+* DISCOVERY_PASSWORD
 * DISCOVERY_URL
 * DISCOVERY_ENVIRONMENT_ID
 * DISCOVERY_COLLECTION_ID
-* DISCOVERY_USERNAME
-* DISCOVERY_PASSWORD
+* DISCOVERY_CONFIGURATION_FILE
+
+or
+
+* DISCOVERY_IAM_APIKEY
+* DISCOVERY_URL
+* DISCOVERY_ENVIRONMENT_ID
+* DISCOVERY_COLLECTION_ID
 * DISCOVERY_CONFIGURATION_FILE
 
 #### `env.sample:`
 
 ```
-# Copy this file to .env and replace the credentials with
-# your own before starting the app.
-
 # Watson Discovery
 DISCOVERY_VERSION_DATE="2018-03-05"
-DISCOVERY_URL=<add_discovery_url>
+DISCOVERY_URL=https://gateway.watsonplatform.net/discovery/api
 DISCOVERY_ENVIRONMENT_ID=<add_discovery_environment_id>
 DISCOVERY_COLLECTION_ID=<add_discovery_collection_id>
+DISCOVERY_COLLECTION_NAME=mycollection
+DISCOVERY_COLLECTION_DESC=myCollection
 
 ## Un-comment and use either username+password or IAM apikey.
-# DISCOVERY_IAM_APIKEY=<add_discovery_iam_apikey>
-DISCOVERY_USERNAME=<add_discovery_username>
-DISCOVERY_PASSWORD=<add_discovery_password>
+DISCOVERY_IAM_APIKEY=<add_discovery_iam_apikey>
+# DISCOVERY_USERNAME=<add_discovery_username>
+# DISCOVERY_PASSWORD=<add_discovery_password>
 DISCOVERY_CONFIGURATION_FILE=pdfSegmentConfig.json
+
+# a list of configurations to delete, comma seperated
+DISCOVERY_CONFIG_DELETE=config-pdf-seg,config-pdf-seg02,config-pdf-seg03,config-pdf-seg04
 
 # Run locally on a non-default port (default is 3000)
 # PORT=3000
 ```
 
-## 5. Run the Application
+## 5. Creating and Assigning Custom Configuration, and Upload sample PDF File
 
-1. Install [Node.js](https://nodejs.org/en/) runtime or NPM.
+For better user experience, a Node.js application is used to perform 3 tasks in this section. To run the application,
+
+1. Install [Node.js](https://nodejs.org/en/) runtime or NPM if necessary.
+
 2. Install required Node.js modules
 
 ```
@@ -184,57 +225,93 @@ npm install
 3. Start the app.
 
 ```
- npm start
+ npm app
 ```
 
-4. Access the UI by pointing your browser at `localhost:3000`.
-> Note: `PORT` can be configured in `.env`.
+4. Code in app.js file performs three main tasks
+    * create custom configuration of Discovery service
+    * assign to custom configuration to the collection
+    * upload sample PDF file to the collection
 
-![](doc/source/images/web-app.png)
+> Note, at the time of the writing, more complex Discovery configuration (like the sample one used for this code pattern) can be added/modified/deleted through Watson API. Simple configuration setting can be done through IBM Cloud console.
 
-5. The same information can be verified through Discovery instance UI.
-
-6. Comparing the original PDF document with the uploaded documents in the Discovery collection, you can verify that each segment in the original document was uploaded into the Discovery collection as an individual document for this code pattern. You may modify the Discovery configuration to fit your requirement.
+> Note, assigning configuration to Discovery collection and uploading PDF files to Discovery collection can be done through IBM Cloud console and Watson API. It's done through API here for better user experience.
 
 
-## 6. Deploy and Run the Application on IBM Cloud
+## 6. Verification
 
-To deploy to the IBM Cloud, make sure have the [IBM Cloud CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/get_started.html#getting-started) tool installed. Then run the following commands to login using your IBM Cloud credentials.
+1. Login to [IBM Cloud console](https://console.ng.bluemix.net).
 
-```
-cd segment-pdf-discovery
-ibmcloud login
-```
+2. Navigate to the Service section and select your Discovery service instance. For example, my-discovery-service.
 
-To set the `Org` and `Space` in IBM Cloud environment,
+3. Click `Launch tool` button.
 
-```
-ibmcloud target --cf
-```
+4. Select your collection. For example, mycollection.
 
-When pushing your app to the IBM Cloud, values are read in from the [manifest.yml](manifest.yml) file. Edit this file if you need to change any of the default settings, such as application name or the amount of memory to allocate.
+1. Eight files reside in the collection although the Node.js application only uploaded one PDF file. 
 
-```
----
-applications:
-- path: .
-  name: segment-pdf-discovery
-  buildpack: sdk-for-nodejs
-  memory: 1024M
-  instances: 1
-```
+> Note, this is the result of that the custom configuration slites the segments in the PDF file and ingested each segment as an individual file into the Discovery collection. These actions were taken care by the Discovery service with the help of custom configuration. No API call or manual action is required.
 
-To deploy your application, run the following command.
+![](doc/source/images/8files_in_discovery-collection.png)
 
-```
-$ ibmcloud cf push
-```
+5. In addition, the console shows that the custom configuration is assigned to the collection. For example, conf-pdf-seg.
 
-> NOTE: The URL route assigned to your application will be displayed as a result of this command. Note this value, as it will be required to access your app.
+Note, the proper configuration assignment is the result of Node.js application.
 
-To view the application, go to the IBM Cloud route assigned to your app. Typically, this will take the form `https://<app name>.mybluemix.net`.
+6. Select the `View data schema` icon (the second in the left navigation pane). The label will appear when you hover mouse over the icon.
 
-To view logs, or get overview information about your app, use the IBM Cloud dashboard.
+7. Select the `Document view` tab. All document titles in the collection appear.
+
+> Note, the document titles in the collection are the section titles in the original PDF document.
+
+![](doc/source/images/8files_detail_in_discovery-collection.png)
+
+8. Detail information for each document in the collection is shown in the right pane. 
+
+9. Scroll down in the right pane until locating the `extracted metadata` section. This section provides the information on how and where the document in the Discovery collection comes from. In this example, it's the segment `Setting up Discovery service` in the original PDF file `sample.pdf`.
+
+![](doc/source/images/document_detail_in_discovery-collection.png)
+
+10. Select the `Build query` icon (the third one in the left navigation pane). The label will appear when you hover mouse over the icon.
+
+11. Select `Search for documents` action.
+
+12. Enter `knowledgebase.zip` as the searching criteria of `Use natural language`.
+
+![](doc/source/images/query_discovery-collection.png)
+
+13. `Run query` and query result is displayed in the right pane.
+
+14. In the Summary tab, scroll down and locate the `Results` section. The result information locates in the last section of the original PDF file. With custom configuration, the Discovery service can easily pin-point the section and display relavant information precisely.
+
+> Note, without segmentaion slitting, the entire PDF file is uploaded and stored as a single document in the Discovery collection. Locating the same information would require additional efforts in your application.
+
+![](doc/source/images/query_result.png)
+
+15. If you are intereted in JSON data returned by the Discovery service, select the `JSON` tab.
+
+> Note, when you query the Discovery service through API, the exact same information would be available in your application.
+
+
+## 7. Utilities
+
+Two utility applications are provided to help custom configuration creation and deletion.
+
+To run the utilities,
+
+1. open a command window.
+
+1. Navigate to the folder where this code pattern resildes.
+
+1. Execute
+
+  * node createConfig
+  * node removeConfig
+
+> Note, both utility application get environment and custom configuration from the same source.
+
+* .env file for environment
+* pdfSegmentConfig.json file for custom configuration
 
 
 # Troubleshooting
