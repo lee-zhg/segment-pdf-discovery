@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/IBM/watson-discovery-food-reviews.svg?branch=master)](https://travis-ci.org/IBM/virtualhelpdesk)
 
-# Locating Information Efficently and Precisely - Splitting and Ingesting Segments of PDF File into Watson Discovery
+# Locating Information Efficiently  and Precisely - Splitting and Ingesting Segments of PDF File into Watson Discovery
 
 Splitting and ingesting each segment of a PDF file as individual document into Watson Discovery collection can improve query efficency and identify information more precisely. 
 
@@ -25,13 +25,15 @@ Sometimes, documents are big and it makes harder for the Discovery service to id
 The Document Segmentation feature splits an unstructured document into useful chunks that are then enriched and stored as individual searchable results. This feature can also result in improved result ranking when performing relevancy training (specifically for natural language query) as the training is performed on segmented and information-specific portions of documents instead of the entire general document.
 
 
-## Use Case
+## A Sample Use Case
 
 A car manual contains information of all major components. When the entire car manual is stored as one piece in the Discovery collection and an end user searches for tire information, it retrieves the whole document and take additional effort to pin-point the relevant information. On the other hand, when a specific subject (one segment of the car manual) is stored individually in the Discovery collection and the end user searches for tire information, the information can be pin-pointed precisely and easily. Only relevant information is retrieved.
 
 You have two options: manually split and save each subject as a separate document so that they can be uploaded to Watson Discovery collection individually. Or, use the Document Segmentation feature of Discovery service to segment the original document based on headings within the document.
 
 To automate the slitting and ingesting tasks, you can configure the <h> tags of the documents or change the rules on how the Discovery service splits their documents. Once broken down, each segment will be treated as a separate document that will be enriched and indexed separately. Document Segmentation will segment each time the specified <h> tag(s) are detected.
+
+> Note, the above sample use case is used to illustrate how this Discovery feature can help in the real world. In this code pattern, a small/simple PDF file will be used for demonstration purpose, rather than a entire car manual.
 
 
 ![](doc/source/images/architecture.png)
@@ -55,6 +57,8 @@ To automate the slitting and ingesting tasks, you can configure the <h> tags of 
 # Watch the Video
 
 [![](https://i.ytimg.com/vi/4IsYkTCHgzE/hqdefault.jpg)](https://www.youtube.com/watch?v=4IsYkTCHgzE)
+
+> Note, the car manual use case is used to illustrate how this Discovery feature can help in the real world. In this code pattern, a small/simple PDF file will be used for demonstration purpose, rather than a entire car manual.
 
 
 # Discovery Collection Configuration
@@ -225,7 +229,7 @@ npm install
 3. Start the app.
 
 ```
- npm app
+ node app
 ```
 
 4. Code in app.js file performs three main tasks
@@ -295,7 +299,9 @@ Note, the proper configuration assignment is the result of Node.js application.
 
 ## 7. Utilities
 
-Two utility applications are provided to help custom configuration creation and deletion.
+Two utility applications are provided to help custom configuration creation and deletion. 
+
+At the time of this writing, it's not possible to remove a Discovery configuration through UI. While you fine-tune your Discovery configuration to meet your requirements, you may have to go through the cycle of creating, testing, deleting and recreating your configuration repeatly. Utility `removeConfig` is provided for your convenience to delete a custom configuration. Utility `createConfig` is provided to quickly create a new custom configuration.
 
 To run the utilities,
 
